@@ -17,7 +17,10 @@ module.exports = {
 	devtool: 'source-map',
 	performance: { hints: false },
 
-	entry: path.resolve( __dirname, 'src', 'ckeditor.js' ),
+	entry: [
+		require.resolve( 'regenerator-runtime/runtime.js' ),
+		path.resolve( __dirname, 'src', 'ckeditor.js' ),
+	],
 
 	output: {
 		// The name under which the editor will be exported.
@@ -58,6 +61,17 @@ module.exports = {
 
 	module: {
 		rules: [
+	        {
+	            test: /\.js$/,
+	            use: [
+	                {
+	                    loader: 'babel-loader',
+	                    options: {
+	                        presets: [ require( 'babel-preset-env' ) ]
+	                    }
+	                }
+	            ]
+	        },
 			{
 				test: /\.svg$/,
 				use: [ 'raw-loader' ]
